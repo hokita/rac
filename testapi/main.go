@@ -20,7 +20,8 @@ func main() {
 
 func run() int {
 	r := mux.NewRouter()
-	r.Handle("/users/", &handler.IndexHandler{}).Methods(http.MethodGet)
+	r.Handle("/users/", &handler.IndexUsersHandler{}).Methods(http.MethodGet)
+	r.Handle("/users/{id:[0-9]+}/", &handler.ShowUserHandler{}).Methods(http.MethodGet)
 	if err := http.ListenAndServe(":8080", r); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return fail
