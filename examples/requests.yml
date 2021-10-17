@@ -1,4 +1,6 @@
 - name: "index_users"
   url: "http://localhost:8080/users/"
+  method: "get"
 - name: "show_user"
   url: "http://localhost:8080/users/1/"
+  method: "get"

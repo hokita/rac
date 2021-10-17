@@ -24,28 +24,28 @@ func run() int {
 	flag.Parse()
 	name := flag.Args()[0]
 
-	url, err := getURL(name)
+	req, err := getRequest(name)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return fail
 	}
 
-	if err := runAPI(url); err != nil {
+	if err := runAPI(req); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return fail
 	}
 	return success
 }
 
-func getURL(name string) (string, error) {
+func getRequest(name string) (*request, error) {
 	buf, err := ioutil.ReadFile("./examples/requests.yml")
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	var reqs requests
 	if err := yaml.Unmarshal(buf, &reqs); err != nil {
-		return "", err
+		return nil, err
 	}
 
 	var req *request
@@ -55,32 +55,37 @@ func getURL(name string) (string, error) {
 		}
 	}
 	if req == nil {
-		return "", errors.New("request not found")
+		return nil, errors.New("request not found")
 	}
 
-	return req.URL, nil
+	return req, nil
 }
 
-func runAPI(url string) error {
-	resp, err := http.Get(url)
-	if err != nil {
-		return err
+func runAPI(req *request) error {
+	if req.Method == "get" {
+		resp, err := http.Get(req.URL)
+		if err != nil {
+			return err
+		}
+		defer resp.Body.Close()
+
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+
+		fmt.Println(string(body))
+
+		return nil
 	}
-	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
-
-	fmt.Println(string(body))
-
-	return nil
+	return errors.New("method not found")
 }
 
 type request struct {
-	Name string
-	URL  string
+	Name   string
+	URL    string
+	Method string
 }
 
 type requests []*request
