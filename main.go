@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -19,7 +20,9 @@ func main() {
 }
 
 func run() int {
-	url, err := getFile()
+	name := "show_user"
+
+	url, err := getURL(name)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return fail
@@ -32,18 +35,28 @@ func run() int {
 	return success
 }
 
-func getFile() (string, error) {
-	buf, err := ioutil.ReadFile("./examples/api.yml")
+func getURL(name string) (string, error) {
+	buf, err := ioutil.ReadFile("./examples/requests.yml")
 	if err != nil {
 		return "", err
 	}
 
-	var a apis
-	if err := yaml.Unmarshal(buf, &a); err != nil {
+	var reqs requests
+	if err := yaml.Unmarshal(buf, &reqs); err != nil {
 		return "", err
 	}
 
-	return a[0].URL, nil
+	var req *request
+	for _, r := range reqs {
+		if r.Name == name {
+			req = r
+		}
+	}
+	if req == nil {
+		return "", errors.New("request not found")
+	}
+
+	return req.URL, nil
 }
 
 func runAPI(url string) error {
@@ -63,10 +76,9 @@ func runAPI(url string) error {
 	return nil
 }
 
-type api struct {
-	Name   string
-	URL    string
-	Method string
+type request struct {
+	Name string
+	URL  string
 }
 
-type apis []*api
+type requests []*request

@@ -1,0 +1,4 @@
+- name: "index_user"
+  url: "http://localhost:8080/users/"
+- name: "show_user"
+  url: "http://localhost:8080/users/1/"
