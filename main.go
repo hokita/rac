@@ -83,7 +83,7 @@ func runAPI(req *request) error {
 		resp, err := http.Post(
 			req.URL,
 			"application/json",
-			bytes.NewBuffer([]byte(`{"name":"hokita"}`)),
+			bytes.NewBuffer([]byte(req.JSON)),
 		)
 		if err != nil {
 			return err
@@ -107,6 +107,7 @@ type request struct {
 	Name   string
 	URL    string
 	Method string
+	JSON   string
 }
 
 type requests []*request

@@ -7,3 +7,4 @@
 - name: "create_user"
   url: "http://localhost:8080/users/"
   method: "post"
+  json: '{"name":"hokita"}'
