@@ -11,7 +11,7 @@ import (
 // IndexHandler struct
 type IndexHandler struct{}
 
-func (h IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *IndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	u1 := &domain.User{ID: 1, Name: "hokita"}
 	u2 := &domain.User{ID: 2, Name: "hideee"}
 

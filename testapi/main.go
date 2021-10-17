@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gorilla/mux"
 	"github.com/hokita/ac/testapi/handler"
 )
 
@@ -18,8 +19,9 @@ func main() {
 }
 
 func run() int {
-	http.Handle("/users/", &handler.IndexHandler{})
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	r := mux.NewRouter()
+	r.Handle("/users/", &handler.IndexHandler{}).Methods(http.MethodGet)
+	if err := http.ListenAndServe(":8080", r); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return fail
 	}
