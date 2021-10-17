@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -20,7 +21,8 @@ func main() {
 }
 
 func run() int {
-	name := "show_user"
+	flag.Parse()
+	name := flag.Args()[0]
 
 	url, err := getURL(name)
 	if err != nil {
