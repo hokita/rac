@@ -62,3 +62,21 @@ func (h *ShowUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	io.WriteString(w, string(b))
 }
+
+// CreateUserHandler struct
+type CreateUserHandler struct{}
+
+func (h *CreateUserHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	var inputUser struct {
+		Name string `json:"name"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&inputUser); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		io.WriteString(w, "bad request")
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	io.WriteString(w, inputUser.Name)
+}

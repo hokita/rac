@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"flag"
 	"fmt"
@@ -62,8 +63,28 @@ func getRequest(name string) (*request, error) {
 }
 
 func runAPI(req *request) error {
-	if req.Method == "get" {
+	switch req.Method {
+	case "get":
 		resp, err := http.Get(req.URL)
+		if err != nil {
+			return err
+		}
+		defer resp.Body.Close()
+
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+
+		fmt.Println(string(body))
+
+		return nil
+	case "post":
+		resp, err := http.Post(
+			req.URL,
+			"application/json",
+			bytes.NewBuffer([]byte(`{"name":"hokita"}`)),
+		)
 		if err != nil {
 			return err
 		}

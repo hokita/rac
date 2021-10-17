@@ -4,3 +4,6 @@
 - name: "show_user"
   url: "http://localhost:8080/users/1/"
   method: "get"
+- name: "create_user"
+  url: "http://localhost:8080/users/"
+  method: "post"
