@@ -25,7 +25,12 @@ func run() int {
 	flag.Parse()
 	name := flag.Args()[0]
 
-	req, err := getRequest(name)
+	path := os.Getenv("ACFILE")
+	if path == "" {
+		path = "./examples/requests.yml"
+	}
+
+	req, err := getRequest(path, name)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return fail
@@ -38,8 +43,8 @@ func run() int {
 	return success
 }
 
-func getRequest(name string) (*request, error) {
-	buf, err := ioutil.ReadFile("./examples/requests.yml")
+func getRequest(path, name string) (*request, error) {
+	buf, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
