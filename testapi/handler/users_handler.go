@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/hokita/ac/testapi/domain"
+	"github.com/hokita/rac/testapi/domain"
 )
 
 // IndexUsersHandler struct

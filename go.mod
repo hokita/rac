@@ -1,4 +1,4 @@
-module github.com/hokita/ac
+module github.com/hokita/rac
 
 go 1.17
 

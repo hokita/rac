@@ -1,4 +1,4 @@
-module github.com/hokita/ac/testapi
+module github.com/hokita/rac/testapi
 
 go 1.17
 

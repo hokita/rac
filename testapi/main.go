@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/hokita/ac/testapi/handler"
+	"github.com/hokita/rac/testapi/handler"
 )
 
 const (
