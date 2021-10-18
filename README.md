@@ -1,2 +1,2 @@
-# ac
-api client
+# rac
+REST API client
